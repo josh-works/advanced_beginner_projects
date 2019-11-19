@@ -175,7 +175,10 @@ and when I run the file and shrink my terminal text way down, I can see the imag
 
 Super cool.
 
-## Extensions
+## Extension 1: Print your ASCII-art in badass Matrix Green
 
-I'll implement a few extensions soon.
+TBD
+
+
+
 
