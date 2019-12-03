@@ -221,4 +221,42 @@ Boom. Success:
 
 ![inverting colors](https://cl.ly/2aea4173514d/2019-12-03%20at%208.03%20AM.jpg)
 
+Added this extension in commit `a147409`
+
+## Extension 4: Print pictures from your webcam
+
+This is... super cool. And surprisingly easy! What an amazing world. With two lines of code I can use a _free_ library that grabs images from my webcam. 
+
+I don't know how many hours [Robert Harder](https://github.com/rharder) spent on [imagesnap](https://github.com/rharder/imagesnap), but... quite a few. And the world is better off!
+
+Anyway, it's easy to grab a picture from the webcam:
+
+```
+$ imagesnap
+```
+and this saves the new screenshot as `snapshot.jpg`, by default, in the directory where the command was run. 
+
+I can easily pass that file to my terminal program by manually updating the filepath. 
+
+To make this work end-to-end, I'll need to update the command line arguments, and let my program call `imagesnap` from inside of it. 
+
+Robert Heaton points Ruby-folk towards [popen](https://ruby-doc.org/core-2.6.5/IO.html#method-c-popen). 
+
+Cool. If one passes `selfie` to the ruby program, it'll take a picture from the webcam, and process it normally. `invert` still works. 
+
+##### Regular:
+
+![regular](https://cl.ly/43b9acf8151c/2019-12-03%20at%208.32%20AM.jpg)
+
+#####
+
+![inverted](https://cl.ly/c121713ae2f3/2019-12-03%20at%208.33%20AM.jpg)
+
+Made the update in commit `654bfd0`
+
+
+
+
+
+
 
