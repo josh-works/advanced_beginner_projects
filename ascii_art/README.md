@@ -196,5 +196,11 @@ Lovely. Here it is, being red, but with terminal escape characters, instead of j
 > Add a setting to your program that can be set to either “average”, “min_max” ((max(R, G, B) + min(R, G, B)) / 2 - see section 3) or “luminosity” (0.21 R + 0.72 G + 0.07 B), and use if-statements to select the appropriate brightness mapping depending on what it is set to.
 
 
-OK. Refactor time. 
+Got it working. I first just rolled through the code one pixel at a time, making sure I was getting different brightness values. You can see some of the printed values in commit ``
+
+I was having trouble visually confirming a difference, so I did this:
+
+![differences](https://cl.ly/ab532e4e4d6e/2019-12-03%20at%207.46%20AM.jpg)
+
+It's all working!
 

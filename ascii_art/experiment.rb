@@ -27,49 +27,83 @@ class String
 end
 
 
-# image = MiniMagick::Image.open("../ascii_art/images/climbing.jpg")
-image = MiniMagick::Image.open("./images/apple-touch-icon.png")
+image = MiniMagick::Image.open("../ascii_art/images/climbing.jpg")
+# image = MiniMagick::Image.open("./images/apple-touch-icon.png")
 pixels = image.get_pixels
 
 if pixels.length > 600
-  pixels = image.resize(600).get_pixels
+  pixels = image.resize(500).get_pixels
 end
 
+
+p "please choose from 'average', 'min-max', and 'luminosity'. Default is 'average'"
+brightness_setting = ARGV[0] || "average"
+p brightness_setting
+
 @shading = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$".split("").to_a
+@range = @shading.count
+
+def pick_appropriate_brightness(pix)
+  # abs_brightness is between 0-255, w/pix somewhere between.
+  
+  # abs_brightness represents percentage of max range I want (between 0-100)
+  brightness_percent = pix / 255.0
+  
+  # then grab character from @shading that is that percent of the way through the group
+  index = (brightness_percent * @range).round
+  @shading[index - 1]
+end
+
+def widen_char(char)
+  char + char + char
+end
 
 def pixel_brightness_average(col)
-  r = col[0]
-  g = col[1]
-  b = col[2]
-  pix = (r + g + b) / 3
-  char = @shading[pix / 4]
-  char + char + char
+  r, g, b = col
+  brightness = (r + g + b) / 3.0                    # 244.33333333333334
+  
+  char = pick_appropriate_brightness(brightness)    # "%"
+  widen_char(char)
 end
 
 def pixel_min_max(col)
   r, g, b = col
-  brightness = ([r, g, b].min + [r, g, b].max) / 2
-  char = @shading[brightness / 4]
-  char + char + char
+  brightness = ([r, g, b].min + [r, g, b].max) / 2.0 # 241.5
+  char = pick_appropriate_brightness(brightness)     # "%"
+  widen_char(char)
+end
+
+def pixel_luminosity(col)
+  r, g, b = col
+  brightness = (r * 0.21) + (g * 0.72) + (b * 0.07) # 248.95000000000002
+  char = pick_appropriate_brightness(brightness)    # "B"
+  widen_char(char)
 end
 
 
 converted_image = pixels.map do |row|
   row.map do |col|
-    col = pixel_min_max(col)
-    # col = pixel_brightness_average(col)
+    case brightness_setting
+    when "average"
+      col = pixel_brightness_average(col)
+    when "min-max"
+      col = pixel_min_max(col)
+    when "luminosity"
+      col = pixel_luminosity(col)
+    end
   end
 end
 
 def prep_for_terminal(img)
   img.each do |row|
-    puts row.join.red
+    puts row.join
   end
 end
 
-puts "I'm back green".cyan
-puts "I'm red and back cyan".red
-puts "I'm bold and green and backround red".green
 
 prep_for_terminal(converted_image)
+p "feel free to do it again, passing in a different luminosity scheme:"
+p "please choose from 'average', 'min-max', and 'luminosity'. Default is 'average'"
+
+
 
