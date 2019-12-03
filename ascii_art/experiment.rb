@@ -35,13 +35,25 @@ if pixels.length > 600
   pixels = image.resize(500).get_pixels
 end
 
+# determine if we ought to invert colors and remove setting from args array
+@invert = ARGV.delete("invert") 
 
 p "please choose from 'average', 'min-max', and 'luminosity'. Default is 'average'"
+# this assumes the only argument left is related to brightness setting
 brightness_setting = ARGV[0] || "average"
 p brightness_setting
 
+
 @shading = "`^\",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$".split("").to_a
 @range = @shading.count
+
+def get_character_from_shading_array(index)
+  if @invert
+    @shading[-index]
+  else
+    @shading[index]
+  end
+end
 
 def pick_appropriate_brightness(pix)
   # abs_brightness is between 0-255, w/pix somewhere between.
@@ -50,8 +62,9 @@ def pick_appropriate_brightness(pix)
   brightness_percent = pix / 255.0
   
   # then grab character from @shading that is that percent of the way through the group
-  index = (brightness_percent * @range).round
-  @shading[index - 1]
+  index = (brightness_percent * @range).round - 1
+  
+  get_character_from_shading_array(index)
 end
 
 def widen_char(char)
@@ -104,6 +117,7 @@ end
 prep_for_terminal(converted_image)
 p "feel free to do it again, passing in a different luminosity scheme:"
 p "please choose from 'average', 'min-max', and 'luminosity'. Default is 'average'"
+p "additionally, you can pass 'invert' as a second CLI argument to invert colors"
 
 
 

@@ -213,3 +213,12 @@ $ ruby experiment.rb average
 $ ruby experiment.rb luminosity
 ```
 
+## Extension 3: Add the option to invert all the brightnesses, so dark becomes light and light becomes dark
+
+I'll add an `invert` flag to the CLI args, that will pick from the opposite side of the brightness array. 
+
+Boom. Success:
+
+![inverting colors](https://cl.ly/2aea4173514d/2019-12-03%20at%208.03%20AM.jpg)
+
+
