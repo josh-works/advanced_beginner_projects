@@ -177,8 +177,24 @@ Super cool.
 
 ## Extension 1: Print your ASCII-art in badass Matrix Green
 
-TBD
+Oh, this is just changing my terminal color.
+
+I was thinking I'd be adding color elements to the output, but we'll do that in extension 5. 
+
+This one is easy:
+
+![its green](https://cl.ly/b9c9dbf569c3/2019-11-19%20at%208.40%20AM.jpg)
+
+Scratch that. You can use Ruby to print strings in various colors, per [This StackOverflow answer](https://stackoverflow.com/a/16363159/3210178)
+
+Lovely. Here it is, being red, but with terminal escape characters, instead of just using my Terminal's GUI to change the output:
+
+![red output](https://cl.ly/3ca4dc96af7f/2019-12-03%20at%206.55%20AM.jpg)
+
+## Extension 2: Implement the min/max and luminosity brightness mappings from section 3
+
+> Add a setting to your program that can be set to either “average”, “min_max” ((max(R, G, B) + min(R, G, B)) / 2 - see section 3) or “luminosity” (0.21 R + 0.72 G + 0.07 B), and use if-statements to select the appropriate brightness mapping depending on what it is set to.
 
 
-
+OK. Refactor time. 
 
