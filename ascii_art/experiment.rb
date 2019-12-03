@@ -27,7 +27,16 @@ class String
 end
 
 
-image = MiniMagick::Image.open("../ascii_art/images/climbing.jpg")
+@selfie = ARGV.delete("selfie")
+if @selfie
+  p "about to take picture..."
+  new_picture = IO.popen("imagesnap snapshot.jpg")
+  new_picture.read
+  image = MiniMagick::Image.open("snapshot.jpg")
+else
+  image = MiniMagick::Image.open("../ascii_art/images/climbing.jpg")
+end
+
 # image = MiniMagick::Image.open("./images/apple-touch-icon.png")
 pixels = image.get_pixels
 
