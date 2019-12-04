@@ -254,9 +254,142 @@ Cool. If one passes `selfie` to the ruby program, it'll take a picture from the 
 
 Made the update in commit `654bfd0`
 
+## Extension 5: Print your ASCII art in glorious color
+
+This is thought-provoking:
+
+> up until now you’ve been throwing away color information when you convert your pixel matrix into an intensity matrix.
+
+So, how do I retain some color? Robert gives some suggestions:
+
+> You don’t have to print the entire image in color. 
+> 
+> You could add some subtle artsy accents on pixels that are almost entirely Red, Blue or Green (for example pixels with the values (240, 3, 10), (13, 226, 18) or (0, 0, 255)) and print the rest in black and white. 
+> 
+> Or choose pixels colors based on a flag overlay, whilst keeping the brightnesses of the underlying image.
+
+I sure am throwing away a ton of data when converting to brightness. 
+
+I wonder what it'll look like if I convert a given pixel to that symbol _and_ wrap it in a given color?
+
+For example, if a pixel comes in as `[10, 134, 210]`, my `pixel_brightness_average` function combines the `rgb` values, divides by 3, and goes and fetches a given character for brightness. In this case, it would be `118`, which is 46% of the way through the given `shading` scale. 
+
+I'd still like to get that 46% brightness, but I suppose I'll have to include an optional color scheme to it. 
+
+I've got this bit of code:
+
+```ruby
+def black;          "\e[30m#{self}\e[0m" end
+def red;            "\e[31m#{self}\e[0m" end
+def green;          "\e[32m#{self}\e[0m" end
+def brown;          "\e[33m#{self}\e[0m" end
+def blue;           "\e[34m#{self}\e[0m" end
+def magenta;        "\e[35m#{self}\e[0m" end
+def cyan;           "\e[36m#{self}\e[0m" end
+def gray;           "\e[37m#{self}\e[0m" end
+```
+
+Which makes me think I can certainly apply a color to a character. 
+
+I'm going to try randomly adding colors to pixels.
+
+Lets do it here:
+
+```ruby
+def widen_char(char)
+  joined = char + char + char
+  if rand < 0.3
+    joined.green
+  else
+    joined
+  end
+end
+```
+
+Nailed it. This is _exactly_ that Instagram Filter I was going for. Which was it? oh yeah, `mold`:
+
+![moldy AF](https://cl.ly/9557f392ac51/2019-12-03%20at%206.42%20PM.jpg)
 
 
+Now lets add `String.green` to any pixel that is strong in the green dimension. 
 
+I have to start _at least_ from a method that still knows the color of the character. In this case:
+
+```ruby
+def pixel_brightness_average(col)
+  r, g, b = col
+  brightness = (r + g + b) / 3.0
+  
+  char = pick_appropriate_brightness(brightness)
+  widen_char(char)
+end
+```
+and with this small modification:
+
+```ruby
+def pixel_brightness_average(col)
+  r, g, b = col
+  brightness = (r + g + b) / 3.0
+  
+  char = pick_appropriate_brightness(brightness)
+  char = char.green if g > 200 
+  widen_char(char)
+end
+```
+
+We get this monstrosity: 
+
+![it's aliiiiiive](https://cl.ly/8db9c6ac11b1/2019-12-03%20at%206.52%20PM.jpg)
+
+Lets try to apply the green a bit more sparingly.
+
+I added this `apply_green_ish` method:
+
+```ruby
+  def apply_green_ish(col, char)
+    r, g, b = col
+    if r < 150 && b < 150 && g > 150
+      return char.green
+    else
+      char
+    end
+  end
+```
+
+It sorta works. I hardly remember the original picture, but we've got green applied only to certain pixels:
+
+![partial green](https://cl.ly/5b8babca31f8/2019-12-03%20at%206.58%20PM.jpg)
+
+Lets get this working only in the three primary colors:
+
+```ruby
+def colorize_rgb(col, char)
+  r, g, b = col
+  if r < 150 && b < 150 && g > 150
+    return char.green
+  elsif r > 150 && b < 150 && g < 150
+    return char.red
+  elsif r < 150 && b > 150 && g < 150
+    return char.blue
+  else
+    char
+  end
+end
+```
+
+This method is... beautiful in its simplicity.
+
+`</sarcasm>`
+
+Well, this picture makes me look more patriotic than I actually am:
+
+![red, white, and blue](https://cl.ly/9fd9ec11bc67/2019-12-03%20at%207.01%20PM.jpg)
+
+Lets get more green and less red. 
+
+Tweaking some values - the mold is back, but I'm less patriotic. I'd say win-win:
+
+![moldy flag](https://cl.ly/78151df01853/2019-12-03%20at%207.03%20PM.jpg)
 
 
 

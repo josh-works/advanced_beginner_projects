@@ -82,23 +82,38 @@ end
 
 def pixel_brightness_average(col)
   r, g, b = col
-  brightness = (r + g + b) / 3.0                    # 244.33333333333334
+  brightness = (r + g + b) / 3.0
   
-  char = pick_appropriate_brightness(brightness)    # "%"
+  char = pick_appropriate_brightness(brightness)
+  char = colorize_rgb(col, char) 
   widen_char(char)
+end
+
+def colorize_rgb(col, char)
+  r, g, b = col
+  case 
+  when r < 150 && b < 150 && g > 100
+    return char.green
+  when r > 140 && b < 110 && g < 110
+    return char.red
+  when r < 100 && b > 110 && g < 100
+    return char.blue
+  else
+    char
+  end
 end
 
 def pixel_min_max(col)
   r, g, b = col
-  brightness = ([r, g, b].min + [r, g, b].max) / 2.0 # 241.5
-  char = pick_appropriate_brightness(brightness)     # "%"
+  brightness = ([r, g, b].min + [r, g, b].max) / 2.0
+  char = pick_appropriate_brightness(brightness)
   widen_char(char)
 end
 
 def pixel_luminosity(col)
   r, g, b = col
-  brightness = (r * 0.21) + (g * 0.72) + (b * 0.07) # 248.95000000000002
-  char = pick_appropriate_brightness(brightness)    # "B"
+  brightness = (r * 0.21) + (g * 0.72) + (b * 0.07)
+  char = pick_appropriate_brightness(brightness)
   widen_char(char)
 end
 
@@ -127,6 +142,7 @@ prep_for_terminal(converted_image)
 p "feel free to do it again, passing in a different luminosity scheme:"
 p "please choose from 'average', 'min-max', and 'luminosity'. Default is 'average'"
 p "additionally, you can pass 'invert' as a second CLI argument to invert colors"
+
 
 
 
