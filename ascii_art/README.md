@@ -1,6 +1,45 @@
-# [programming projects for advanced beginners: ascii art](https://robertheaton.com/2018/06/12/programming-projects-for-advanced-beginners-ascii-art/): josh's notes
+# working through [programming projects for advanced beginners: ascii art](https://robertheaton.com/2018/06/12/programming-projects-for-advanced-beginners-ascii-art/)
 
 per the guide, we're using [Ruby's Minimagick](https://github.com/minimagick/minimagick)
+
+
+### Notes from Josh
+
+I often outline my thought processes as I move through programming projects, for work or personal programming. This document is no exception. 
+
+If someone is reading this, and wants to run the code locally, clone down the repo and CD into the appropriate directory:
+
+```shell
+$ git clone git@github.com:josh-works/advanced_beginner_projects.git
+$ cd advanced_beginner_projects/ascii-art
+
+# brew install imagesnap if you don't have it:
+$ brew install imagesnap
+
+# now you can start interacting w/the program.
+# convert a random pic of me to ascii-art:
+
+$ ruby experiment.rb
+
+# run it in selfie mode:
+$ ruby experiment.rb selfie
+
+# invert colors
+$ ruby experiment.rb selfie invert
+
+# use various image brightness patterns:
+$ ruby experiment.rb               # defaults to average
+$ ruby experiment.rb min-max                 
+$ ruby experiment.rb average
+$ ruby experiment.rb luminosity
+
+# mix all of the above:
+$ ruby experiment.rb selfie invert luminosity
+```
+
+There's a lot of room for refactoring; I've recently been working through Sandi Metz' Practical Object Oriented Design in Ruby_, and... well, reading that book and writing this code makes my eyes bleed a little, but I'm not sure how to think about it differently. 
+
+I'm afraid that what I would do would be minor rearranging the deck chairs on the Titanic, rather than fundamental and substantial improvements in the organization of this code. 
 
 ## 0. Choose an image
 
@@ -390,6 +429,10 @@ Lets get more green and less red.
 Tweaking some values - the mold is back, but I'm less patriotic. I'd say win-win:
 
 ![moldy flag](https://cl.ly/78151df01853/2019-12-03%20at%207.03%20PM.jpg)
+
+Great! I've added the above function, and everything works (including selfies on the webcam) as expected.
+
+Added it all in commit `1c30d30`
 
 
 

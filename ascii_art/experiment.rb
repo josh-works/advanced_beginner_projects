@@ -26,12 +26,16 @@ class String
   def reverse_color;  "\e[7m#{self}\e[27m" end
 end
 
-
+# This whole selfie if statement feels very wrong
 @selfie = ARGV.delete("selfie")
 if @selfie
   p "about to take picture..."
   new_picture = IO.popen("imagesnap snapshot.jpg")
+  # what if someone doesn't have imagesnap installed?
   new_picture.read
+  # this was how I forced the program to wait until the webcam took a picture
+  # otherwise it would start taking a picture, and use the existing snapshot.jpg, 
+  # rather than waiting for it to finish.
   image = MiniMagick::Image.open("snapshot.jpg")
 else
   image = MiniMagick::Image.open("../ascii_art/images/climbing.jpg")
@@ -107,6 +111,7 @@ def pixel_min_max(col)
   r, g, b = col
   brightness = ([r, g, b].min + [r, g, b].max) / 2.0
   char = pick_appropriate_brightness(brightness)
+  char = colorize_rgb(col, char)
   widen_char(char)
 end
 
@@ -114,9 +119,9 @@ def pixel_luminosity(col)
   r, g, b = col
   brightness = (r * 0.21) + (g * 0.72) + (b * 0.07)
   char = pick_appropriate_brightness(brightness)
+  char = colorize_rgb(col, char)
   widen_char(char)
 end
-
 
 converted_image = pixels.map do |row|
   row.map do |col|
@@ -137,12 +142,8 @@ def prep_for_terminal(img)
   end
 end
 
-
 prep_for_terminal(converted_image)
 p "feel free to do it again, passing in a different luminosity scheme:"
 p "please choose from 'average', 'min-max', and 'luminosity'. Default is 'average'"
 p "additionally, you can pass 'invert' as a second CLI argument to invert colors"
-
-
-
 
